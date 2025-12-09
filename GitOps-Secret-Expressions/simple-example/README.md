@@ -29,10 +29,10 @@ metadata:
   name: app-secrets
 stringData:
   # Account-level secret from Vault
-  vault-secret: <+secrets.getValue("account.vaultSecret")>
+  vault-secret: <+secrets.getValue("vaultSecret")>
   
   # Organization-level secret
-  api-key: <+secrets.getValue("org.apiKey")>
+  api-key: <+secrets.getValue("apiKey")>
   
   # Project-level secret
   db-password: <+secrets.getValue("dbPassword")>
