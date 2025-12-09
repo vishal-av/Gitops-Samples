@@ -44,20 +44,18 @@ stringData:
 
 Create these secrets in Harness (backed by **HashiCorp Vault**):
 
-**Account Level** (Account Settings → Secrets):
-- **Identifier**: `vaultSecret`
-- **Secret Manager**: HashiCorp Vault
-- **Value**: Your vault secret value
-
-**Organization Level** (Org Settings → Secrets):
-- **Identifier**: `apiKey`
-- **Secret Manager**: HashiCorp Vault
-- **Value**: Your API key
-
 **Project Level** (Project Settings → Secrets):
 - **Identifier**: `dbPassword`
 - **Secret Manager**: HashiCorp Vault
 - **Value**: Your database password
+
+- **Identifier**: `vaultSecret`
+- **Secret Manager**: HashiCorp Vault
+- **Value**: Your vault secret value
+
+- **Identifier**: `apiKey`
+- **Secret Manager**: HashiCorp Vault
+- **Value**: Your API key
 
 ### 2. Enable GitOps Agent Plugin
 
@@ -76,7 +74,7 @@ If your Harness secrets have different identifiers, update [`secret.yaml`](./sec
 
 ```yaml
 stringData:
-  vault-secret: <+secrets.getValue("account.YOUR_SECRET_ID")>
+  vault-secret: <+secrets.getValue("YOUR_SECRET_ID")>
 ```
 
 ### Step 2: Commit to Git
