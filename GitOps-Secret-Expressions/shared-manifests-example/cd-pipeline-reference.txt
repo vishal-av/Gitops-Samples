@@ -1,0 +1,33 @@
+# CD Pipeline definition (for reference only - create in Harness UI)
+# This shows how the same manifests work with CD Pipeline
+
+# In Harness UI, you would create:
+
+# 1. Service:
+#    - Name: shared-manifests-service
+#    - Type: Kubernetes
+#    - Manifests:
+#        - Source: Git
+#        - Repository: <your-git-repo>
+#        - Path: GitOps-Secret-Expressions/shared-manifests-example/manifests
+#        - Files: *.yaml
+
+# 2. Environment:
+#    - Name: dev / prod
+#    - Type: Kubernetes
+#    - Infrastructure: <your-k8s-cluster>
+
+# 3. Pipeline with Deploy Stage:
+#    - Service: shared-manifests-service
+#    - Environment: <your-environment>
+#    - Execution:
+#        - Rolling Deployment
+#        - Apply Step uses manifests from Git
+
+# The pipeline will:
+# 1. Fetch manifests from Git
+# 2. Resolve secret expressions
+# 3. Apply to cluster using kubectl
+
+# Same manifests, different deployment method!
+

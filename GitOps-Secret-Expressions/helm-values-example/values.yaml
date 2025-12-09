@@ -1,0 +1,78 @@
+# ============================================
+# VALUES FILE WITH HARNESS SECRET EXPRESSIONS
+# ============================================
+# This file contains Harness secret expressions that reference
+# secrets stored in HashiCorp Vault and managed through Harness.
+#
+# The expressions are resolved by the Harness GitOps plugin before
+# being passed to Helm for templating.
+
+# ============================================
+# APPLICATION CONFIGURATION (Non-Secret)
+# ============================================
+app:
+  name: sample-app
+  replicaCount: 2
+  
+  image:
+    repository: nginx
+    tag: "alpine"
+    pullPolicy: IfNotPresent
+  
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 8080
+  
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "50m"
+    limits:
+      memory: "128Mi"
+      cpu: "100m"
+
+# ============================================
+# SECRETS CONFIGURATION
+# ============================================
+# ⭐ SECRET EXPRESSIONS ARE HERE ⭐
+#
+# These expressions reference secrets stored in HashiCorp Vault.
+# The Harness plugin resolves them before Helm templates the manifests.
+#
+# IMPORTANT: Create these secrets in Harness before deploying!
+
+secrets:
+  # ------------------------------------------
+  # Organization-Level Secrets
+  # ------------------------------------------
+  # Syntax: <+secrets.getValue("org.SECRET_ID")>
+  # Create in: Organization Settings → Secrets
+  
+  database:
+    host: "db.example.com"  # Non-secret, can be plain text
+    port: "5432"
+    name: "myapp_db"
+    username: "dbuser"
+    # ⭐ Secret expression for database password
+    password: <+secrets.getValue("org.dbPassword")>
+  
+  # ------------------------------------------
+  # Project-Level Secrets
+  # ------------------------------------------
+  # Syntax: <+secrets.getValue("SECRET_ID")>
+  # Create in: Project Settings → Secrets
+  
+  application:
+    # ⭐ Secret expression for app secret key
+    secretKey: <+secrets.getValue("appSecret")>
+  
+  api:
+    # ⭐ Secret expression for API key
+    key: <+secrets.getValue("apiKey")>
+  
+  cache:
+    host: "redis.default.svc.cluster.local"
+    port: "6379"
+    # ⭐ Secret expression for Redis password
+    password: <+secrets.getValue("redisPassword")>

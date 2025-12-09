@@ -1,0 +1,28 @@
+# GitOps Application definition (for reference)
+# You can apply this with: kubectl apply -f gitops-application.yaml
+# Or create the application through the Harness UI
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: shared-manifests-app
+  namespace: argocd
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/YOUR-ORG/YOUR-REPO.git
+    targetRevision: main
+    path: GitOps-Secret-Expressions/shared-manifests-example/manifests
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+
