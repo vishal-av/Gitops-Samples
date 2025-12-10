@@ -1,5 +1,6 @@
 # Simple Kubernetes Secret with Harness Expressions
 
+
 This example demonstrates the simplest way to use Harness Secret Expressions: **directly in a Kubernetes Secret manifest**.
 
 ## Overview
