@@ -1,11 +1,8 @@
 # ============================================
 # VALUES FILE WITH HARNESS SECRET EXPRESSIONS
 # ============================================
-# This file contains Harness secret expressions that reference
-# secrets stored in HashiCorp Vault and managed through Harness.
-#
-# The expressions are resolved by the Harness GitOps plugin before
-# being passed to Helm for templating.
+# All secrets are at PROJECT level - simplest approach!
+# No need for account. or org. prefixes
 
 # ============================================
 # APPLICATION CONFIGURATION (Non-Secret)
@@ -35,44 +32,36 @@ app:
 # ============================================
 # SECRETS CONFIGURATION
 # ============================================
-# ⭐ SECRET EXPRESSIONS ARE HERE ⭐
+# ⭐ ALL SECRET EXPRESSIONS ARE PROJECT-LEVEL ⭐
 #
-# These expressions reference secrets stored in HashiCorp Vault.
-# The Harness plugin resolves them before Helm templates the manifests.
+# Syntax: <+secrets.getValue("SECRET_ID")>
+# (No account. or org. prefix needed!)
 #
-# IMPORTANT: Create these secrets in Harness before deploying!
+# Create these secrets in: Project Settings → Secrets
 
 secrets:
-  # ------------------------------------------
-  # Organization-Level Secrets
-  # ------------------------------------------
-  # Syntax: <+secrets.getValue("org.SECRET_ID")>
-  # Create in: Organization Settings → Secrets
-  
+  # Database connection details
   database:
     host: "db.example.com"  # Non-secret, can be plain text
     port: "5432"
     name: "myapp_db"
-    username: "dbuser"
-    # ⭐ Secret expression for database password
-    password: <+secrets.getValue("org.dbPassword")>
+    # ⭐ Project-level secret expressions
+    username: <+secrets.getValue("dbUsername")>
+    password: <+secrets.getValue("dbPassword")>
   
-  # ------------------------------------------
-  # Project-Level Secrets
-  # ------------------------------------------
-  # Syntax: <+secrets.getValue("SECRET_ID")>
-  # Create in: Project Settings → Secrets
-  
+  # Application secrets
   application:
-    # ⭐ Secret expression for app secret key
+    # ⭐ Project-level secret expression
     secretKey: <+secrets.getValue("appSecret")>
   
+  # API credentials
   api:
-    # ⭐ Secret expression for API key
+    # ⭐ Project-level secret expression
     key: <+secrets.getValue("apiKey")>
   
+  # Cache/Redis
   cache:
     host: "redis.default.svc.cluster.local"
     port: "6379"
-    # ⭐ Secret expression for Redis password
+    # ⭐ Project-level secret expression
     password: <+secrets.getValue("redisPassword")>

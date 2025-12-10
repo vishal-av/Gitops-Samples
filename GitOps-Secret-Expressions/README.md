@@ -140,7 +140,7 @@ The syntax varies based on the scope where the secret is created:
 
 ## Where Secret Expressions Work
 
-### ✅ **SUPPORTED LOCATIONS**
+### **SUPPORTED LOCATIONS**
 
 Secret expressions are resolved in the following locations:
 
@@ -200,23 +200,15 @@ stringData:
   redis-password: <+secrets.getValue("account.redisPassword")>
 ```
 
-### ❌ **NOT SUPPORTED LOCATIONS**
+### **NOT SUPPORTED LOCATIONS**
 
 Secret expressions will **NOT** be resolved in:
 
-- ❌ **Deployments** (`kind: Deployment`)
-- ❌ **ConfigMaps** (`kind: ConfigMap`)
-- ❌ **Services** (`kind: Service`)
-- ❌ **Ingress** (`kind: Ingress`)
-- ❌ **Any non-Secret Kubernetes resource**
-
-**Why?** This is a security feature. If secrets were resolved in non-Secret resources, the actual secret values could be visible in:
-- Argo CD UI diffs
-- Kubernetes describe commands
-- Application logs
-- Manifest views
-
-By restricting to Secret resources only, Kubernetes and Argo CD automatically handle obfuscation.
+- **Deployments** (`kind: Deployment`)
+- **ConfigMaps** (`kind: ConfigMap`)
+- **Services** (`kind: Service`)
+- **Ingress** (`kind: Ingress`)
+- **Any non-Secret Kubernetes resource**
 
 ---
 
@@ -224,7 +216,7 @@ By restricting to Secret resources only, Kubernetes and Argo CD automatically ha
 
 This repository includes **complete, working sample applications** that demonstrate Harness Secret Expressions in action. These samples show you exactly where to put the secret expressions and how they work in real scenarios.
 
-### 📁 Sample 1: Simple Kubernetes Secret Manifest ([`/simple-example`](./simple-example/))
+### Sample 1: Simple Kubernetes Secret Manifest ([`/simple-example`](./simple-example/))
 
 **The simplest approach** - secret expressions directly in a Kubernetes Secret manifest.
 
@@ -249,7 +241,7 @@ stringData:
 
 ---
 
-### 📁 Sample 2: Helm Chart with Values File ([`/helm-values-example`](./helm-values-example/))
+### Sample 2: Helm Chart with Values File ([`/helm-values-example`](./helm-values-example/))
 
 **The Helm approach** - secret expressions in `values.yaml`, templates stay portable.
 
@@ -283,14 +275,14 @@ stringData:
 
 ---
 
-### 📁 Bonus Sample 3: Same Manifests for GitOps AND CD Pipeline ([`/shared-manifests-example`](./shared-manifests-example/))
+### Sample 3: Same Manifests for GitOps AND CD Pipeline ([`/shared-manifests-example`](./shared-manifests-example/))
 
 **Important discovery**: You **do NOT need separate manifests** for GitOps vs CD Pipelines!
 
 **What this shows**:
 - The **exact same Git repository and manifests** work with both:
-  - ✅ GitOps Application (Argo CD sync)
-  - ✅ CD Pipeline (traditional Harness deployment)
+  - GitOps Application (Argo CD sync)
+  - CD Pipeline (traditional Harness deployment)
 - Secret expressions resolve correctly in both scenarios
 - No duplication needed!
 
@@ -303,7 +295,7 @@ stringData:
 
 ---
 
-### 🎯 Which Example Should I Use?
+### Which Example Should I Use?
 
 | Your Situation | Use This Sample |
 |----------------|-----------------|
@@ -430,7 +422,7 @@ spec:
 
 ## Important Notes and Gotchas
 
-### 🔐 Security Considerations
+### Security Considerations
 
 1. **Argo CD Redis Cache**: 
    - Argo CD caches manifests (including resolved secrets) in its Redis instance
@@ -447,11 +439,11 @@ spec:
    - Kubernetes also masks values in Secret resources
    - However, users with kubectl access and proper RBAC can still retrieve secret values (this is standard Kubernetes behavior)
 
-### ⚠️ Common Pitfalls
+### Common Pitfalls
 
 1. **Wrong Resource Type**:
    ```yaml
-   # ❌ WRONG - Won't work in ConfigMap
+   #  WRONG - Won't work in ConfigMap
    apiVersion: v1
    kind: ConfigMap
    metadata:
@@ -461,7 +453,7 @@ spec:
    ```
 
    ```yaml
-   # ✅ CORRECT - Works in Secret
+   #  CORRECT - Works in Secret
    apiVersion: v1
    kind: Secret
    metadata:
@@ -473,10 +465,10 @@ spec:
 2. **Wrong Scope Prefix**:
    ```yaml
    # If secret is at org level, must use "org." prefix
-   # ❌ WRONG
+   #  WRONG
    password: <+secrets.getValue("dbPassword")>
    
-   # ✅ CORRECT
+   #  CORRECT
    password: <+secrets.getValue("org.dbPassword")>
    ```
 
@@ -488,7 +480,7 @@ spec:
    - Only HashiCorp Vault and Harness Secret Manager are currently supported
    - AWS Secrets Manager, Azure Key Vault, GCP Secret Manager are NOT supported
 
-### 🎯 Best Practices
+### Best Practices
 
 1. **Use Appropriate Scopes**:
    - Account-level: For secrets shared across entire Harness account
@@ -636,5 +628,3 @@ This is a community repository. If you have improvements or additional examples:
 **Last Updated**: December 2025  
 **Feature Flag**: `CDS_GITOPS_SECRET_RESOLUTION_ENABLED`  
 **Minimum Agent Version**: Check Harness documentation for compatibility
-
-

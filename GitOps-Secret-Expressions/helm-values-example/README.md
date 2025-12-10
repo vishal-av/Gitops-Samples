@@ -205,7 +205,7 @@ This makes your chart vendor-specific and non-portable.
 ```yaml
 # values.yaml - DO THIS
 secrets:
-  password: <+secrets.getValue("dbPassword")>
+    password: <+secrets.getValue("dbPassword")>
 
 # templates/secret.yaml - Stays portable!
 stringData:
