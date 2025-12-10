@@ -118,8 +118,11 @@ kind: Secret
 metadata:
   name: shared-app-secrets
 stringData:
-  api-key: <+secrets.getValue("org.apiKey")>
+  # All project-level secrets
+  api-key: <+secrets.getValue("apiKey")>
   db-password: <+secrets.getValue("dbPassword")>
+  db-username: <+secrets.getValue("dbUsername")>
+  app-secret: <+secrets.getValue("appSecret")>
 ```
 
 ### `manifests/deployment.yaml`
@@ -135,12 +138,13 @@ Standard Kubernetes Service.
 Same as other examples:
 
 1. **Secrets in Harness** (backed by HashiCorp Vault):
-   - Org-level: `apiKey`
-   - Project-level: `dbPassword`
+   - Project-level: `apiKey`, `dbPassword`, `dbUsername`, `appSecret`
 
 2. **For GitOps**: Agent with Harness plugin enabled
 3. **For CD Pipeline**: Kubernetes connector configured
 4. **Feature Flag**: `CDS_GITOPS_SECRET_RESOLUTION_ENABLED`
+
+> 💡 See [SECRETS-SETUP-GUIDE.md](../SECRETS-SETUP-GUIDE.md) for creating the secrets.
 
 ## Deploy Both Ways
 

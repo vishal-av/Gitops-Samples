@@ -28,36 +28,50 @@ kind: Secret
 metadata:
   name: app-secrets
 stringData:
-  # Account-level secret from Vault
-  vault-secret: <+secrets.getValue("account.vaultSecret")>
-  
-  # Organization-level secret
-  api-key: <+secrets.getValue("org.apiKey")>
-  
-  # Project-level secret
+  # All project-level secrets - simple syntax!
+  api-key: <+secrets.getValue("apiKey")>
   db-password: <+secrets.getValue("dbPassword")>
+  db-username: <+secrets.getValue("dbUsername")>
+  app-secret: <+secrets.getValue("appSecret")>
+  redis-password: <+secrets.getValue("redisPassword")>
 ```
 
 ## Prerequisites
 
 ### 1. Create Secrets in Harness
 
-Create these secrets in Harness (backed by **HashiCorp Vault**):
+Create these **project-level** secrets in Harness (backed by **HashiCorp Vault**):
 
-**Account Level** (Account Settings → Secrets):
-- **Identifier**: `vaultSecret`
-- **Secret Manager**: HashiCorp Vault
-- **Value**: Your vault secret value
+**Project Settings** → **Secrets** → **+ New Secret** → **Text**
 
-**Organization Level** (Org Settings → Secrets):
-- **Identifier**: `apiKey`
-- **Secret Manager**: HashiCorp Vault
-- **Value**: Your API key
+Create these 5 secrets:
 
-**Project Level** (Project Settings → Secrets):
-- **Identifier**: `dbPassword`
-- **Secret Manager**: HashiCorp Vault
-- **Value**: Your database password
+1. **API Key**
+   - **Identifier**: `apiKey`
+   - **Secret Manager**: HashiCorp Vault
+   - **Value**: Your API key
+
+2. **Database Password**
+   - **Identifier**: `dbPassword`
+   - **Secret Manager**: HashiCorp Vault
+   - **Value**: Your database password
+
+3. **Database Username**
+   - **Identifier**: `dbUsername`
+   - **Secret Manager**: HashiCorp Vault
+   - **Value**: Your database username
+
+4. **Application Secret**
+   - **Identifier**: `appSecret`
+   - **Secret Manager**: HashiCorp Vault
+   - **Value**: Your application secret key
+
+5. **Redis Password**
+   - **Identifier**: `redisPassword`
+   - **Secret Manager**: HashiCorp Vault
+   - **Value**: Your Redis password
+
+> 💡 **Tip**: See [SECRETS-SETUP-GUIDE.md](../SECRETS-SETUP-GUIDE.md) for detailed step-by-step instructions.
 
 ### 2. Enable GitOps Agent Plugin
 
@@ -76,8 +90,10 @@ If your Harness secrets have different identifiers, update [`secret.yaml`](./sec
 
 ```yaml
 stringData:
-  vault-secret: <+secrets.getValue("account.YOUR_SECRET_ID")>
+  api-key: <+secrets.getValue("YOUR_SECRET_ID")>
 ```
+
+> **Note**: All secrets use project-level scope (no prefix needed!)
 
 ### Step 2: Commit to Git
 
@@ -165,7 +181,7 @@ kubectl logs -l app=sample-app -n default
 
 ✅ **Expressions in Secret Resource**: Only works in `kind: Secret` resources (security feature)  
 ✅ **Vault-Backed**: Secrets are stored in HashiCorp Vault  
-✅ **Scope Prefixes**: `account.` for account-level, `org.` for org-level, none for project-level  
+✅ **Project-Level Only**: Simple syntax with no prefixes needed  
 ✅ **Masked in UI**: Actual values never shown in Harness or Argo CD interfaces  
 ✅ **No Git Secrets**: Sensitive data never committed to Git  
 
@@ -184,8 +200,8 @@ kubectl logs -l app=sample-app -n default
 
 **Solution**:
 - Verify secret identifier matches exactly (case-sensitive)
-- Check scope prefix (account./org./no prefix)
-- Confirm secret exists in correct Harness scope
+- Confirm secret exists in **Project Settings** → **Secrets**
+- Ensure secret is backed by HashiCorp Vault
 
 ### Issue: Values visible in plain text
 

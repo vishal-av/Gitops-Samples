@@ -30,12 +30,17 @@ helm-values-example/
 The secret expressions are in the values file:
 
 ```yaml
-# values.yaml
+# values.yaml - All project-level secrets!
 secrets:
   database:
-    password: <+secrets.getValue("org.dbPassword")>
+    username: <+secrets.getValue("dbUsername")>
+    password: <+secrets.getValue("dbPassword")>
   api:
     key: <+secrets.getValue("apiKey")>
+  application:
+    secretKey: <+secrets.getValue("appSecret")>
+  cache:
+    password: <+secrets.getValue("redisPassword")>
 ```
 
 ### 📍 Template Using Values: [`templates/secret.yaml`](./templates/secret.yaml)
@@ -67,18 +72,19 @@ stringData:
 
 ### 1. Create Secrets in Harness
 
-Create these secrets in Harness (backed by **HashiCorp Vault**):
+Create these **project-level** secrets in Harness (backed by **HashiCorp Vault**):
 
-**Organization Level** (Org Settings → Secrets):
-- **Identifier**: `dbPassword`
-- **Secret Manager**: HashiCorp Vault
+**Project Settings** → **Secrets** → **+ New Secret** → **Text**
 
-**Project Level** (Project Settings → Secrets):
-- **Identifier**: `apiKey`
-- **Secret Manager**: HashiCorp Vault
+Create these 5 secrets:
 
-- **Identifier**: `appSecret`
-- **Secret Manager**: HashiCorp Vault
+1. **Identifier**: `apiKey` - API key for services
+2. **Identifier**: `dbPassword` - Database password  
+3. **Identifier**: `dbUsername` - Database username
+4. **Identifier**: `appSecret` - Application secret key
+5. **Identifier**: `redisPassword` - Redis/Cache password
+
+> 💡 **Tip**: See [SECRETS-SETUP-GUIDE.md](../SECRETS-SETUP-GUIDE.md) for detailed instructions.
 
 ### 2. GitOps Agent Setup
 
@@ -94,8 +100,10 @@ Check [`values.yaml`](./values.yaml) - update secret identifiers if needed:
 ```yaml
 secrets:
   database:
-    password: <+secrets.getValue("org.YOUR_SECRET_ID")>
+    password: <+secrets.getValue("YOUR_SECRET_ID")>
 ```
+
+> **Note**: All secrets use project-level scope (no prefix needed!)
 
 ### Step 2: Commit to Git
 
@@ -185,6 +193,7 @@ kubectl get pods -l app.kubernetes.io/name=sample-app -n default
 ✅ **Portable**: Templates have zero Harness-specific code  
 ✅ **Standard Helm**: Uses normal Helm templating patterns  
 ✅ **Vault-Backed**: Secrets stored in HashiCorp Vault  
+✅ **Project-Level**: Simple syntax with no prefixes  
 ✅ **Reusable**: Same chart works with any tool  
 ✅ **Best Practice**: Follows Helm conventions for values  
 
@@ -203,9 +212,9 @@ This makes your chart vendor-specific and non-portable.
 ### ✅ Recommended: Expressions in Values
 
 ```yaml
-# values.yaml - DO THIS
+# values.yaml - DO THIS (project-level)
 secrets:
-    password: <+secrets.getValue("dbPassword")>
+  password: <+secrets.getValue("dbPassword")>
 
 # templates/secret.yaml - Stays portable!
 stringData:

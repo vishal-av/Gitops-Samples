@@ -126,15 +126,19 @@ Before using this feature, ensure you have:
 
 ## Secret Expression Syntax
 
-The syntax varies based on the scope where the secret is created:
+All examples use **project-level secrets** for simplicity:
 
 | Scope | Expression Syntax | Example |
 |-------|-------------------|---------|
-| **Account Level** | `<+secrets.getValue("account.SECRET_ID")>` | `<+secrets.getValue("account.vaultSecret")>` |
-| **Organization Level** | `<+secrets.getValue("org.SECRET_ID")>` | `<+secrets.getValue("org.apiKey")>` |
 | **Project Level** | `<+secrets.getValue("SECRET_ID")>` | `<+secrets.getValue("dbPassword")>` |
 
-> **Important**: Replace `SECRET_ID` with the actual identifier of your secret as configured in Harness.
+> **Note**: You can also use Account-level (`account.SECRET_ID`) or Organization-level (`org.SECRET_ID`) secrets, but these examples use project-level for simplicity.
+
+**Why project-level?**
+- ✅ Simpler syntax (no prefix needed)
+- ✅ Easier permissions management
+- ✅ Better isolation per project
+- ✅ Perfect for demos and getting started
 
 ---
 
@@ -228,9 +232,11 @@ This repository includes **complete, working sample applications** that demonstr
 apiVersion: v1
 kind: Secret
 stringData:
-  vault-secret: <+secrets.getValue("account.vaultSecret")>
-  api-key: <+secrets.getValue("org.apiKey")>
+  api-key: <+secrets.getValue("apiKey")>
   db-password: <+secrets.getValue("dbPassword")>
+  db-username: <+secrets.getValue("dbUsername")>
+  app-secret: <+secrets.getValue("appSecret")>
+  redis-password: <+secrets.getValue("redisPassword")>
 ```
 
 **Secrets are stored in**: HashiCorp Vault (configured in Harness)
@@ -253,16 +259,21 @@ stringData:
 # values.yaml - Expressions here
 secrets:
   database:
-    password: <+secrets.getValue("org.dbPassword")>
+    username: <+secrets.getValue("dbUsername")>
+    password: <+secrets.getValue("dbPassword")>
   api:
     key: <+secrets.getValue("apiKey")>
+  application:
+    secretKey: <+secrets.getValue("appSecret")>
 ```
 
 ```yaml
 # templates/secret.yaml - Standard Helm templating
 stringData:
+  db-username: {{ .Values.secrets.database.username }}
   db-password: {{ .Values.secrets.database.password }}
   api-key: {{ .Values.secrets.api.key }}
+  app-secret: {{ .Values.secrets.application.secretKey }}
 ```
 
 **Why this matters**: Your Helm templates remain **portable** and vendor-agnostic. The same chart works with any tool - only the values file changes!
@@ -311,14 +322,17 @@ stringData:
 **For the simple example**:
 - File: `simple-example/secret.yaml`
 - Location: In the `stringData` field of the Secret resource
+- Syntax: `<+secrets.getValue("secretId")>` (project-level)
 - Secrets stored in: HashiCorp Vault
 
 **For the Helm example**:
 - File: `helm-values-example/values.yaml` (expressions here)
 - File: `helm-values-example/templates/secret.yaml` (uses the values)
+- Syntax: `<+secrets.getValue("secretId")>` (project-level)
 - Secrets stored in: HashiCorp Vault
 
 **For all examples**:
+- All secret expressions use **project-level** scope (simplest!)
 - The secret expressions reference secrets stored in **HashiCorp Vault**
 - The Vault integration is configured in Harness as your Secret Manager
 - The Harness GitOps plugin resolves the expressions during manifest rendering
