@@ -14,7 +14,7 @@ All examples now use **PROJECT-LEVEL secrets only** for simplicity!
 ```
 Name: API Key
 Identifier: apiKey  ⭐ (must match exactly!)
-Secret Manager: HashiCorp Vault (or Harness Secret Manager)
+Secret Manager: Harness Secret Manager (or Harness Secret Manager)
 Value: demo-api-key-12345
 Description: API key for external services
 ```
@@ -23,7 +23,7 @@ Description: API key for external services
 ```
 Name: Database Password
 Identifier: dbPassword  ⭐
-Secret Manager: HashiCorp Vault
+Secret Manager: Harness Secret Manager
 Value: demo-db-pass-secret-789
 Description: Database password for application
 ```
@@ -32,7 +32,7 @@ Description: Database password for application
 ```
 Name: Database Username
 Identifier: dbUsername  ⭐
-Secret Manager: HashiCorp Vault
+Secret Manager: Harness Secret Manager
 Value: app_user
 Description: Database username for application
 ```
@@ -41,7 +41,7 @@ Description: Database username for application
 ```
 Name: Application Secret
 Identifier: appSecret  ⭐
-Secret Manager: HashiCorp Vault
+Secret Manager: Harness Secret Manager
 Value: demo-app-secret-key-abc123
 Description: Application secret key for encryption
 ```
@@ -50,7 +50,7 @@ Description: Application secret key for encryption
 ```
 Name: Redis Password
 Identifier: redisPassword  ⭐
-Secret Manager: HashiCorp Vault
+Secret Manager: Harness Secret Manager
 Value: demo-redis-pass-xyz456
 Description: Redis/Cache password
 ```
@@ -59,7 +59,7 @@ Description: Redis/Cache password
 ```
 Name: Test Secret
 Identifier: testSecret  ⭐
-Secret Manager: HashiCorp Vault
+Secret Manager: Harness Secret Manager
 Value: hello-world-test-123
 Description: Test secret for permission validation
 ```
@@ -102,7 +102,7 @@ For each secret above, fill in:
 │                                         │
 │ Select Secret Manager:                  │
 │ ○ Harness Secret Manager                │
-│ ● HashiCorp Vault        (recommended)  │
+│ ● Harness Secret Manager        (recommended)  │
 │                                         │
 │ Secret Value:                           │
 │ [••••••••••••••••••]                   │
@@ -234,7 +234,7 @@ testSecret: "hello_world_test_123"
 ### Issue: "Wrong secret value"
 **Cause**: Wrong secret manager or secret updated
 **Fix**:
-1. Verify all secrets use same secret manager (HashiCorp Vault)
+1. Verify all secrets use same secret manager (Harness Secret Manager)
 2. Check secret values in Harness UI
 3. Re-sync application after updating secrets
 
@@ -256,7 +256,7 @@ Required Secrets:
 5. redisPassword ............... [ ]
 6. testSecret (for testing) .... [ ]
 
-All secrets using HashiCorp Vault? [ ]
+All secrets using Harness Secret Manager? [ ]
 ```
 
 ---

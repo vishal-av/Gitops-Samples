@@ -9,7 +9,7 @@ Use this minimal example to test if the GitOps agent can access secrets.
    - Click **+ New Secret** → **Text**
    - Name: `Test Secret`
    - Identifier: `testSecret`
-   - Secret Manager: HashiCorp Vault (or Harness Secret Manager)
+   - Secret Manager: Harness Secret Manager
    - Value: `hello-world-123`
 
 2. **Create a test GitOps application**:

@@ -85,10 +85,10 @@ Before using this feature, ensure you have:
    
    > **Note**: Replace `your-agent-identifier` with your actual GitOps agent identifier and adjust the namespace if your Argo CD installation uses a different namespace.
 
-3. **Secrets Created in Harness with HashiCorp Vault**:
+3. **Secrets Created in Harness with Harness Secret Manager**:
    - Create secrets in Harness at Account, Org, or Project level
-   - Configure HashiCorp Vault or Harness Secret Manager as the backend
-   - **For Vault**: Ensure Vault connector is properly configured in Harness
+   - Configure Harness Secret Manager (built-in) as the backend
+   - **For this example**: We use Harness Secret Manager (simplest option)
 
 4. **Appropriate RBAC Permissions**:
    - Permissions to create and manage secrets in Harness
@@ -99,14 +99,16 @@ Before using this feature, ensure you have:
 ## Supported Secret Managers
 
 **Currently Supported:**
-- **HashiCorp Vault**
-- **Harness Secret Manager (Built-in)**
+- ✅ **Harness Secret Manager (Built-in)** - Recommended for getting started
+- ✅ **HashiCorp Vault**
 
 **Not Currently Supported:**
-- AWS Secrets Manager
-- Azure Key Vault
-- GCP Secret Manager
-- Other third-party secret managers
+- ❌ AWS Secrets Manager
+- ❌ Azure Key Vault
+- ❌ GCP Secret Manager
+- ❌ Other third-party secret managers
+
+> **Note**: These examples use **Harness Secret Manager** for simplicity.
 
 ---
 
@@ -239,7 +241,7 @@ stringData:
   redis-password: <+secrets.getValue("redisPassword")>
 ```
 
-**Secrets are stored in**: HashiCorp Vault (configured in Harness)
+**Secrets are stored in**: Harness Secret Manager (configured in Harness)
 
 **Perfect for**: Teams using plain Kubernetes manifests
 
@@ -278,7 +280,7 @@ stringData:
 
 **Why this matters**: Your Helm templates remain **portable** and vendor-agnostic. The same chart works with any tool - only the values file changes!
 
-**Secrets are stored in**: HashiCorp Vault (configured in Harness)
+**Secrets are stored in**: Harness Secret Manager (configured in Harness)
 
 **Perfect for**: Teams using Helm
 
@@ -333,8 +335,8 @@ stringData:
 
 **For all examples**:
 - All secret expressions use **project-level** scope (simplest!)
-- The secret expressions reference secrets stored in **HashiCorp Vault**
-- The Vault integration is configured in Harness as your Secret Manager
+- The secret expressions reference secrets stored in **Harness Secret Manager**
+- The Secret Manager is the built-in Harness Secret Manager (no external setup needed)
 - The Harness GitOps plugin resolves the expressions during manifest rendering
 
 ---

@@ -2,6 +2,7 @@
 # VALUES FILE WITH HARNESS SECRET EXPRESSIONS
 # ============================================
 # All secrets are at PROJECT level - simplest approach!
+# Secrets are stored in Harness Secret Manager (built-in)
 # No need for account. or org. prefixes
 
 # ============================================

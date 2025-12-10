@@ -8,17 +8,17 @@
 
 | # | Identifier | Name | Example Value | Secret Manager |
 |---|------------|------|---------------|----------------|
-| 1 | `apiKey` | API Key | demo-api-key-12345 | HashiCorp Vault |
-| 2 | `dbPassword` | Database Password | demo-db-pass-789 | HashiCorp Vault |
-| 3 | `dbUsername` | Database Username | app_user | HashiCorp Vault |
-| 4 | `appSecret` | Application Secret | demo-app-secret-abc | HashiCorp Vault |
-| 5 | `redisPassword` | Redis Password | demo-redis-pass-xyz | HashiCorp Vault |
+| 1 | `apiKey` | API Key | demo-api-key-12345 | Harness Secret Manager |
+| 2 | `dbPassword` | Database Password | demo-db-pass-789 | Harness Secret Manager |
+| 3 | `dbUsername` | Database Username | app_user | Harness Secret Manager |
+| 4 | `appSecret` | Application Secret | demo-app-secret-abc | Harness Secret Manager |
+| 5 | `redisPassword` | Redis Password | demo-redis-pass-xyz | Harness Secret Manager |
 
 ### Test Secret (1 total)
 
 | # | Identifier | Name | Example Value | Secret Manager |
 |---|------------|------|---------------|----------------|
-| 6 | `testSecret` | Test Secret | hello-world-123 | HashiCorp Vault |
+| 6 | `testSecret` | Test Secret | hello-world-123 | Harness Secret Manager |
 
 ---
 
@@ -68,12 +68,12 @@ test-permission/secret-test.yaml
 
 ### Before Creating Applications:
 
-- [ ] HashiCorp Vault connector configured in Harness
+- [ ] Harness Secret Manager connector configured in Harness
 - [ ] Feature flag `CDS_GITOPS_SECRET_RESOLUTION_ENABLED` enabled
 - [ ] GitOps agent has Harness plugin enabled
 - [ ] All 5 main secrets created (apiKey, dbPassword, dbUsername, appSecret, redisPassword)
 - [ ] testSecret created (for testing)
-- [ ] All secrets use HashiCorp Vault as Secret Manager
+- [ ] All secrets use Harness Secret Manager as Secret Manager
 - [ ] GitOps agent service account has Secret View & Access permissions
 
 ### After Creating Secrets:
@@ -91,37 +91,37 @@ test-permission/secret-test.yaml
 Secret 1:
 Name: API Key
 Identifier: apiKey
-Secret Manager: HashiCorp Vault
+Secret Manager: Harness Secret Manager
 Value: <your-api-key>
 
 Secret 2:
 Name: Database Password
 Identifier: dbPassword
-Secret Manager: HashiCorp Vault
+Secret Manager: Harness Secret Manager
 Value: <your-db-password>
 
 Secret 3:
 Name: Database Username
 Identifier: dbUsername
-Secret Manager: HashiCorp Vault
+Secret Manager: Harness Secret Manager
 Value: <your-db-username>
 
 Secret 4:
 Name: Application Secret
 Identifier: appSecret
-Secret Manager: HashiCorp Vault
+Secret Manager: Harness Secret Manager
 Value: <your-app-secret>
 
 Secret 5:
 Name: Redis Password
 Identifier: redisPassword
-Secret Manager: HashiCorp Vault
+Secret Manager: Harness Secret Manager
 Value: <your-redis-password>
 
 Test Secret:
 Name: Test Secret
 Identifier: testSecret
-Secret Manager: HashiCorp Vault
+Secret Manager: Harness Secret Manager
 Value: hello-world-123
 ```
 
@@ -129,5 +129,5 @@ Value: hello-world-123
 
 **Total Time to Create**: ~5-10 minutes  
 **Scope**: Project Level  
-**Secret Manager**: HashiCorp Vault
+**Secret Manager**: Harness Secret Manager
 

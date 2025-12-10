@@ -8,7 +8,7 @@ This pattern shows how to:
 - Put secret expressions in the `values.yaml` file
 - Reference those values in Helm templates using standard `{{ .Values.* }}` syntax
 - Keep your Helm chart **portable** (templates have no vendor-specific code)
-- Use secrets stored in **HashiCorp Vault**
+- Use secrets stored in **Harness Secret Manager**
 
 ## What's Included
 
@@ -72,7 +72,7 @@ stringData:
 
 ### 1. Create Secrets in Harness
 
-Create these **project-level** secrets in Harness (backed by **HashiCorp Vault**):
+Create these **project-level** secrets in Harness (backed by **Harness Secret Manager**):
 
 **Project Settings** → **Secrets** → **+ New Secret** → **Text**
 
@@ -85,6 +85,8 @@ Create these 5 secrets:
 5. **Identifier**: `redisPassword` - Redis/Cache password
 
 > 💡 **Tip**: See [SECRETS-SETUP-GUIDE.md](../SECRETS-SETUP-GUIDE.md) for detailed instructions.
+
+**All secrets should use Harness Secret Manager** as the secret manager.
 
 ### 2. GitOps Agent Setup
 
@@ -183,7 +185,7 @@ kubectl get pods -l app.kubernetes.io/name=sample-app -n default
 └──────────────────┘
 ```
 
-1. **Harness plugin** reads `values.yaml` and resolves `<+secrets.getValue()>` expressions from Vault
+1. **Harness plugin** reads `values.yaml` and resolves `<+secrets.getValue()>` expressions from Harness Secret Manager
 2. **Resolved values** are passed to Helm
 3. **Helm templates** the manifests using standard `{{ .Values.* }}` syntax
 4. **Kubernetes** receives the final Secret with actual values
@@ -192,7 +194,7 @@ kubectl get pods -l app.kubernetes.io/name=sample-app -n default
 
 ✅ **Portable**: Templates have zero Harness-specific code  
 ✅ **Standard Helm**: Uses normal Helm templating patterns  
-✅ **Vault-Backed**: Secrets stored in HashiCorp Vault  
+✅ **Harness Secret Manager**: Secrets stored in Harness Secret Manager  
 ✅ **Project-Level**: Simple syntax with no prefixes  
 ✅ **Reusable**: Same chart works with any tool  
 ✅ **Best Practice**: Follows Helm conventions for values  
@@ -237,7 +239,7 @@ This keeps templates portable and follows Helm best practices.
 **Check**:
 - Harness plugin is enabled on agent
 - Secrets exist in Harness with correct identifiers
-- Secrets are backed by HashiCorp Vault
+- Secrets are backed by Harness Secret Manager
 - Feature flag is enabled
 
 ### Issue: "undefined value" error from Helm

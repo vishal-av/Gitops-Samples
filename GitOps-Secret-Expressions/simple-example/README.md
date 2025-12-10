@@ -4,7 +4,7 @@ This example demonstrates the simplest way to use Harness Secret Expressions: **
 
 ## Overview
 
-This is a straightforward example where secret expressions are placed directly in the `stringData` field of a Kubernetes Secret resource. The secrets are stored in **HashiCorp Vault** and managed through Harness.
+This is a straightforward example where secret expressions are placed directly in the `stringData` field of a Kubernetes Secret resource. The secrets are stored in **Harness Secret Manager** and managed through Harness.
 
 ## What's Included
 
@@ -40,7 +40,7 @@ stringData:
 
 ### 1. Create Secrets in Harness
 
-Create these **project-level** secrets in Harness (backed by **HashiCorp Vault**):
+Create these **project-level** secrets in Harness (backed by **Harness Secret Manager**):
 
 **Project Settings** → **Secrets** → **+ New Secret** → **Text**
 
@@ -48,27 +48,27 @@ Create these 5 secrets:
 
 1. **API Key**
    - **Identifier**: `apiKey`
-   - **Secret Manager**: HashiCorp Vault
+   - **Secret Manager**: Harness Secret Manager
    - **Value**: Your API key
 
 2. **Database Password**
    - **Identifier**: `dbPassword`
-   - **Secret Manager**: HashiCorp Vault
+   - **Secret Manager**: Harness Secret Manager
    - **Value**: Your database password
 
 3. **Database Username**
    - **Identifier**: `dbUsername`
-   - **Secret Manager**: HashiCorp Vault
+   - **Secret Manager**: Harness Secret Manager
    - **Value**: Your database username
 
 4. **Application Secret**
    - **Identifier**: `appSecret`
-   - **Secret Manager**: HashiCorp Vault
+   - **Secret Manager**: Harness Secret Manager
    - **Value**: Your application secret key
 
 5. **Redis Password**
    - **Identifier**: `redisPassword`
-   - **Secret Manager**: HashiCorp Vault
+   - **Secret Manager**: Harness Secret Manager
    - **Value**: Your Redis password
 
 > 💡 **Tip**: See [SECRETS-SETUP-GUIDE.md](../SECRETS-SETUP-GUIDE.md) for detailed step-by-step instructions.
@@ -173,14 +173,14 @@ kubectl logs -l app=sample-app -n default
 1. **You commit** `secret.yaml` with expressions to Git
 2. **Argo CD renders** the manifest
 3. **Harness plugin** intercepts and resolves `<+secrets.getValue()>` expressions
-4. **Harness fetches** the actual values from HashiCorp Vault
+4. **Harness fetches** the actual values from Harness Secret Manager
 5. **Kubernetes creates** the Secret with resolved values
 6. **Values are masked** in Harness and Argo CD UIs
 
 ## Key Points
 
 ✅ **Expressions in Secret Resource**: Only works in `kind: Secret` resources (security feature)  
-✅ **Vault-Backed**: Secrets are stored in HashiCorp Vault  
+✅ **Harness Secret Manager**: Secrets are stored in Harness Secret Manager  
 ✅ **Project-Level Only**: Simple syntax with no prefixes needed  
 ✅ **Masked in UI**: Actual values never shown in Harness or Argo CD interfaces  
 ✅ **No Git Secrets**: Sensitive data never committed to Git  
@@ -193,7 +193,7 @@ kubectl logs -l app=sample-app -n default
 1. Harness plugin enabled on GitOps agent
 2. Feature flag `CDS_GITOPS_SECRET_RESOLUTION_ENABLED` is enabled
 3. Secrets exist in Harness with exact identifiers
-4. Secrets are backed by HashiCorp Vault
+4. Secrets are backed by Harness Secret Manager
 5. You have RBAC permissions to access the secrets
 
 ### Issue: "Secret not found" error
@@ -201,7 +201,7 @@ kubectl logs -l app=sample-app -n default
 **Solution**:
 - Verify secret identifier matches exactly (case-sensitive)
 - Confirm secret exists in **Project Settings** → **Secrets**
-- Ensure secret is backed by HashiCorp Vault
+- Ensure secret is backed by Harness Secret Manager
 
 ### Issue: Values visible in plain text
 

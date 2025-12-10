@@ -137,7 +137,7 @@ Standard Kubernetes Service.
 
 Same as other examples:
 
-1. **Secrets in Harness** (backed by HashiCorp Vault):
+1. **Secrets in Harness** (backed by Harness Secret Manager):
    - Project-level: `apiKey`, `dbPassword`, `dbUsername`, `appSecret`
 
 2. **For GitOps**: Agent with Harness plugin enabled
